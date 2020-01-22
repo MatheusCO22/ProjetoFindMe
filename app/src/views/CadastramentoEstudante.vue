@@ -1,0 +1,566 @@
+<template>       
+  <v-container>
+    <v-card
+      flat
+      color="rgba(255, 255, 255, 0.8)"
+      class="rounded-card"
+    >
+      <v-card-text
+        class="login-container"
+        flat
+      >
+        <v-form
+          ref="form"
+          v-model="valid"
+          @submit.prevent="submit"
+        >
+          <v-container
+            grid-list-xl
+            fluid
+            class="container-texts"
+          >
+          <v-flex
+            xs12
+            text-xs-center
+          >
+            <v-avatar
+              size="180"
+              color="blue-grey lighten-4"
+              class="foto"
+              @click="photoPicker()"
+          >
+            <v-layout column justify-center fill-height v-if="!fotoUrl">
+              <i class="fas fa-user"/>
+            </v-layout>  
+              <img  v-if="fotoUrl" 
+                :src="fotoUrl"
+                alt="20px"
+              >
+            </v-avatar>
+              <p class="adc-foto">
+                Escolha uma foto de perfil
+              </p>
+          </v-flex>
+            <input 
+              ref="fotoInput"
+              type="file"
+              style="display: none"
+              accept="image/*"
+              @change="imagemEscolhida"
+          >
+            <v-layout wrap>
+              <v-flex
+                xs12
+                sm6
+              >
+                <v-text-field
+                  ref="nome"
+                  v-model="form.nome"
+                  label="Nome completo"
+                  placeholder="Nome completo"
+                  color="#1867C0"
+                  :rules="[rules.required]"
+                />
+              </v-flex>
+              <v-flex
+                xs12
+                sm6
+              >
+                <v-text-field
+                  id="email"
+                  ref="email"
+                  v-model="form.email"
+                  label="E-Mail"
+                  placeholder="exemplo@email.com"
+                  color="#1867C0"
+                  :rules="[rules.email]"
+                />
+              </v-flex>
+              <v-flex
+                xs12
+                sm6
+              >
+                <v-text-field
+                  id="cpf"
+                  v-model="form.cpf"
+                  label="CPF"
+                  placeholder="123.456.789-00"
+                  color="#1867C0"
+                  mask="###.###.###-##"
+                  :rules="[rules.cpf]"
+                />
+              </v-flex>
+              <v-flex
+                xs12
+                sm6
+              >
+                <v-text-field
+                  id="fone"
+                  v-model="form.fone"
+                  label="Telefone"
+                  placeholder="(XX) xxxx-xxxx"
+                  color="#1867C0"
+                  mask="(##) #####-####"
+                  :rules="[rules.required]"
+                />
+              </v-flex>
+              <v-flex
+                xs12
+                sm6
+              >
+                <v-text-field
+                  v-model="form.school"
+                  label="Instituição onde estuda"
+                  placeholder="Universidade Federal do Paraná"
+                  color="#1867C0"
+                  :rules="[rules.required]"
+                />
+              </v-flex>
+              <v-flex
+                xs12
+                sm6
+              >
+                <v-text-field
+                  v-model="form.curso"
+                  label="Curso"
+                  placeholder="Ciência da computação"
+                  color="#1867C0"
+                  :rules="[rules.required]"
+                />
+              </v-flex>
+              <v-flex
+                xs12
+                sm6
+              >
+                <v-text-field 
+                  v-model="form.password"
+                  label="Senha"
+                  hint="Pelo menos 6 caracteres"
+                  color="#1867C0"
+                  :append-icon="show1 ? 'visibility' : 'visibility_off'"
+                  :type="show1 ? 'text' : 'password'"
+                  :rules="[rules.required, rules.min]"
+                  counter
+                  @click:append="show1 = !show1"
+                />
+              </v-flex>
+              <v-flex
+                xs12
+                sm6
+              >
+                <v-text-field
+                  id="confirm-password"
+                  v-model="form.confirmPassword"
+                  label="Confirmar senha"
+                  color="#1867C0"
+                  :append-icon="show1 ? 'visibility' : 'visibility_off'"
+                  :rules="[rules.required]"
+                  :error-messages=" passwordMatchError"
+                  :type="show1 ? 'text' : 'password'"
+                  counter
+                  @click:append="show1 = !show1"
+                />
+              </v-flex>
+              <v-flex
+                xs12
+                sm6
+              >
+                <v-autocomplete
+                  ref="country"
+                  v-model="form.estado"
+                  color="#1867C0"
+                  :rules="[rules.required]"
+                  :items="estados"
+                >
+                  <template
+                    v-slot:label
+                  >
+                    <div>
+                      UF <small><small> (Estado)</small></small>
+                    </div>
+                  </template>
+                </v-autocomplete>
+              </v-flex>
+              <v-flex
+                xs12
+                sm6
+              >
+                <v-menu
+                  v-model="menu2"
+                  :nudge-right="20"
+                  :close-on-content-click="false"
+                  lazy
+                  transition="scale-transition"
+                  offset-y
+                  full-width
+                  min-width="290px"
+                >
+                  <template v-slot:activator="{ on }">
+                    <v-text-field
+                      :value="formattedDate(form.birth)"
+                      label="Data de nascimento"
+                      color="#1867C0"
+                      append-icon="event"
+                      :rules="[rules.birth]"
+                      v-on="on"
+                    />
+                  </template>
+                  <v-date-picker
+                    v-model="form.birth"
+                    landscape
+                    locale="pt-br"
+                    @input="menu2 = false"
+                  />
+                </v-menu>
+              </v-flex>
+              <v-flex xs12>
+                <v-checkbox
+                  v-model="form.terms"
+                  color="#1867C0"
+                  :rules="[(v) => !!v || 'Por favor, aceite os termos antes de continuar.']"
+                >
+                  <template v-slot:label>
+                    <div class="texto-check">
+                      Você aceita os
+                      <a
+                        href="javascript:;"
+                        @click.stop="terms = true"
+                      >termos</a>
+                      e
+                      <a
+                        href="javascript:;"
+                        @click.stop="conditions = true"
+                      >condições</a>
+                      ?
+                    </div>
+                  </template>
+                </v-checkbox>
+              </v-flex>
+              <v-divider />
+            </v-layout>
+          </v-container>
+
+          <v-dialog
+            v-model="terms"
+            width="70%"
+          >
+            <v-card>
+              <v-card-title class="title">
+                Termos
+              </v-card-title>
+              <v-card-text
+                v-for="n in 1"
+                :key="n"
+              >
+                <br>  O QUE FAREMOS COM ESTA INFORMAÇÃO?
+                <br>Quando você realiza alguma transação com nossa loja, como parte do processo de compra e venda, coletamos as informações pessoais que você nos dá tais como: nome, e-mail e endereço.
+                Quando você acessa nosso site, também recebemos automaticamente o protocolo de internet do seu computador, endereço de IP, a fim de obter informações que nos ajudam a aprender sobre seu navegador e sistema operacional.
+                Email Marketing será realizado apenas caso você permita. Nestes emails você poderá receber notícia sobre nosso site, novos produtos e outras atualizações.              
+                <br>
+                <br>
+                CONSENTIMENTO
+                <br>Como vocês obtêm meu consentimento?
+                Quando você fornece informações pessoais como nome, telefone e endereço, para completar: uma transação, verificar seu cartão de crédito, fazer um pedido, providenciar uma entrega ou retornar uma compra. Após a realização de ações entendemos que você está de acordo com a coleta de dados para serem utilizados pela nossa empresa.
+                Se pedimos por suas informações pessoais por uma razão secundária, como marketing, vamos lhe pedir diretamente por seu consentimento, ou lhe fornecer a oportunidade de dizer não.
+                E caso você queira retirar seu consentimento, como proceder?
+                Se após você nos fornecer seus dados, você mudar de ideia, você pode retirar o seu consentimento para que possamos entrar em contato, para a coleção de dados contínua, uso ou divulgação de suas informações, a qualquer momento, entrando em contato conosco em matheus.puehler@gmail.com ou nos enviando uma correspondência em: matheus.puehler@gmail.com
+                <br>
+                <br>
+                DIVULGAÇÃO
+                <br> Podemos divulgar suas informações pessoais caso sejamos obrigados pela lei para fazê-lo ou se você violar nossos Termos de Serviço.
+                <br>
+                <br>
+                SERVIÇOS DE TERCEIROS
+                <br>No geral, os fornecedores terceirizados usados por nós irão apenas coletar, usar e divulgar suas informações na medida do necessário para permitir que eles realizem os serviços que eles nos fornecem.
+                Entretanto, certos fornecedores de serviços terceirizados, tais como gateways de pagamento e outros processadores de transação de pagamento, têm suas próprias políticas de privacidade com respeito à informação que somos obrigados a fornecer para eles de suas transações relacionadas com compras.
+                Para esses fornecedores, recomendamos que você leia suas políticas de privacidade para que você possa entender a maneira na qual suas informações pessoais serão usadas por esses fornecedores.
+                Em particular, lembre-se que certos fornecedores podem ser localizados em ou possuir instalações que são localizadas em jurisdições diferentes que você ou nós. Assim, se você quer continuar com uma transação que envolve os serviços de um fornecedor de serviço terceirizado, então suas informações podem tornar-se sujeitas às leis da(s) jurisdição(ões) nas quais o fornecedor de serviço ou suas instalações estão localizados.
+                Como um exemplo, se você está localizado no Canadá e sua transação é processada por um gateway de pagamento localizado nos Estados Unidos, então suas informações pessoais usadas para completar aquela transação podem estar sujeitas a divulgação sob a legislação dos Estados Unidos, incluindo o Ato Patriota.
+                Uma vez que você deixe o site da nosso site ou seja redirecionado para um aplicativo ou site de terceiros, você não será mais regido por essa Política de Privacidade ou pelos Termos de Serviço do nosso site.
+                Links
+                Quando você clica em links na nosso site, eles podem lhe direcionar para fora do nosso site. Não somos responsáveis pelas práticas de privacidade de outros sites e lhe incentivamos a ler as declarações de privacidade deles.
+                <br>
+                <br>
+                SEGURANÇA
+                <br> Para proteger suas informações pessoais, tomamos precauções razoáveis e seguimos as melhores práticas da indústria para nos certificar que elas não serão perdidas inadequadamente, usurpadas, acessadas, divulgadas, alteradas ou destruídas.
+                Usando sempre um banco de dados seguro, com criptografia de todos os dados fornecidos
+              </v-card-text>
+              <v-divider />  
+              <v-card-actions>
+                <v-spacer />
+                <v-btn
+                  flat
+                  color="purple"
+                  @click="terms = false"
+                >
+                  Ok
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+          <v-dialog
+            v-model="conditions"
+            width="70%"
+          >
+            <v-card>
+              <v-card-title class="title">
+                Condições
+              </v-card-title>
+              <v-card-text
+                v-for="n in 1"
+                :key="n"
+              >
+                <br>  O QUE FAREMOS COM ESTA INFORMAÇÃO?
+                <br>Quando você realiza alguma transação com nossa loja, como parte do processo de compra e venda, coletamos as informações pessoais que você nos dá tais como: nome, e-mail e endereço.
+                Quando você acessa nosso site, também recebemos automaticamente o protocolo de internet do seu computador, endereço de IP, a fim de obter informações que nos ajudam a aprender sobre seu navegador e sistema operacional.
+                Email Marketing será realizado apenas caso você permita. Nestes emails você poderá receber notícia sobre nosso site, novos produtos e outras atualizações.              
+                <br>
+                <br>
+                CONSENTIMENTO
+                <br>Como vocês obtêm meu consentimento?
+                Quando você fornece informações pessoais como nome, telefone e endereço, para completar: uma transação, verificar seu cartão de crédito, fazer um pedido, providenciar uma entrega ou retornar uma compra. Após a realização de ações entendemos que você está de acordo com a coleta de dados para serem utilizados pela nossa empresa.
+                Se pedimos por suas informações pessoais por uma razão secundária, como marketing, vamos lhe pedir diretamente por seu consentimento, ou lhe fornecer a oportunidade de dizer não.
+                E caso você queira retirar seu consentimento, como proceder?
+                Se após você nos fornecer seus dados, você mudar de ideia, você pode retirar o seu consentimento para que possamos entrar em contato, para a coleção de dados contínua, uso ou divulgação de suas informações, a qualquer momento, entrando em contato conosco em matheus.puehler@gmail.com ou nos enviando uma correspondência em: matheus.puehler@gmail.com
+                <br>
+                <br>
+                DIVULGAÇÃO
+                <br> Podemos divulgar suas informações pessoais caso sejamos obrigados pela lei para fazê-lo ou se você violar nossos Termos de Serviço.
+                <br>
+                <br>
+                SERVIÇOS DE TERCEIROS
+                <br>No geral, os fornecedores terceirizados usados por nós irão apenas coletar, usar e divulgar suas informações na medida do necessário para permitir que eles realizem os serviços que eles nos fornecem.
+                Entretanto, certos fornecedores de serviços terceirizados, tais como gateways de pagamento e outros processadores de transação de pagamento, têm suas próprias políticas de privacidade com respeito à informação que somos obrigados a fornecer para eles de suas transações relacionadas com compras.
+                Para esses fornecedores, recomendamos que você leia suas políticas de privacidade para que você possa entender a maneira na qual suas informações pessoais serão usadas por esses fornecedores.
+                Em particular, lembre-se que certos fornecedores podem ser localizados em ou possuir instalações que são localizadas em jurisdições diferentes que você ou nós. Assim, se você quer continuar com uma transação que envolve os serviços de um fornecedor de serviço terceirizado, então suas informações podem tornar-se sujeitas às leis da(s) jurisdição(ões) nas quais o fornecedor de serviço ou suas instalações estão localizados.
+                Como um exemplo, se você está localizado no Canadá e sua transação é processada por um gateway de pagamento localizado nos Estados Unidos, então suas informações pessoais usadas para completar aquela transação podem estar sujeitas a divulgação sob a legislação dos Estados Unidos, incluindo o Ato Patriota.
+                Uma vez que você deixe o site da nosso site ou seja redirecionado para um aplicativo ou site de terceiros, você não será mais regido por essa Política de Privacidade ou pelos Termos de Serviço do nosso site.
+                Links
+                Quando você clica em links na nosso site, eles podem lhe direcionar para fora do nosso site. Não somos responsáveis pelas práticas de privacidade de outros sites e lhe incentivamos a ler as declarações de privacidade deles.
+                <br>
+                <br>
+                SEGURANÇA
+                <br> Para proteger suas informações pessoais, tomamos precauções razoáveis e seguimos as melhores práticas da indústria para nos certificar que elas não serão perdidas inadequadamente, usurpadas, acessadas, divulgadas, alteradas ou destruídas.
+                Usando sempre um banco de dados seguro, com criptografia de todos os dados fornecidos
+              </v-card-text>
+              <v-divider />
+              <v-card-actions>
+                <v-spacer />
+                <v-btn
+                  flat
+                  color="purple"
+                  @click="conditions = false"
+                >
+                  Ok
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+
+          <v-card-actions>
+            <v-btn
+              color="red"
+              class="white--text"
+              fab
+              @click="resetForm"
+            >
+              <i class="fas fa-times" />
+            </v-btn>
+
+            <v-spacer />
+            <v-btn
+              :disabled="!valid"
+              color="green"
+              class="white--text"
+              type="submit"
+              fab
+            >
+              <i class="fas fa-check" />
+            </v-btn>
+          </v-card-actions>
+        </v-form>
+      </v-card-text>
+    </v-card>
+  </v-container>
+</template>
+
+<script>
+import CPF from 'gerador-validador-cpf';
+import firebase from 'firebase';
+export default {
+  data () {
+    const defaultForm = Object.freeze({
+      nome: '', email: '', cpf: '', fone:'', school: '',
+      curso: '', password:'', confirmPassword:'', estado:'',
+      birth: new Date().toISOString().substring(0,10),
+      terms: false, type:'estudante'
+    })
+    return {
+      anoAtual: new Date().toISOString().substring(0,4),
+      valid:false,
+      estados:[
+        'AC','AL','AM','AP','BA','CE','DF','ES','GO','MA','MG','MS','MT','PA',
+        'PB','PE','PI','PR','RJ','RN','RO','RR','RS','SC','SE','SP','TO'
+      ],
+
+      menu2: false, show2: true, show1:false,
+      form: Object.assign({}, defaultForm),
+      rules: {
+        required: value => !!value || 'Campo obrigatório',
+        email : value => {
+        const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+          return pattern.test(value) || 'E-Mail inválido.'
+        },
+        min: v => v.length >= 6 || 'A senha deve conter pelo menos 6 caracteres',
+        cpf: v => this.testaCPF(v) || 'CPF inválido.',
+        birth: v=> this.testaData(v)
+      },
+      conditions: false,
+      content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur sodales ligula in libero. Sed dignissim lacinia nunc.`,
+      snacksucesso: false,
+      snackerro: false,
+      terms: false,
+      fotoUrl: '', imagemFirebase: ''
+    }
+    },
+    computed: {
+      passwordMatchError () {
+        return this.form.password !== this.form.confirmPassword ? 'As senhas não são iguais' : ''
+      }
+    },
+
+    methods: {
+       photoPicker(){
+        console.log('chegou')
+        this.$refs.fotoInput.click()
+      },
+      	imagemEscolhida(event){
+				const storage = firebase.storage();
+				const storageRef = storage.ref();
+        console.log('entrouuuu')
+
+        const imagem=event.target.files
+        let photoName=imagem[0].name
+				console.log(photoName)
+				
+				if(photoName.lastIndexOf('.')<=0){
+					
+          return alert ('Selecione um arquivo válido')
+				}
+        const leitorFoto = new FileReader()
+        leitorFoto.addEventListener('load', () =>{
+          this.fotoUrl=leitorFoto.result
+          console.log(this.fotoUrl)
+        })
+        leitorFoto.readAsDataURL(imagem[0])
+        console.log('aqui chegaste')
+        this.imagemFirebase=imagem[0]
+			},
+      testaData(data){
+        if(data){
+          const ano = data.substring(6,10);
+          var idade = this.anoAtual - ano;
+          
+          if(idade < 16){
+            return 'Você precisa ter pelo menos 16 anos para se cadastrar'
+          }
+          else{
+            return true
+          }
+        }else{
+          return 'Campo obrigatório'
+        }
+      },
+      testaCPF(strCpf){
+        if(strCpf.length == 11){
+          if(CPF.validate(strCpf)){
+            return true;
+          }else{
+            return false;
+          }  
+        }else{
+          return false;
+        }
+      },
+        formattedDate(date) {
+          if(date){
+            const [year, month, day] = date.split('-')
+            return `${day}/${month}/${year}`
+          }
+        },
+      resetForm () {
+        this.form = Object.assign({}, this.defaultForm)
+        this.$refs.form.reset()
+      },
+      submit () {
+        const {
+          nome, email, cpf, fone,
+          school, curso, password,
+          estado, birth, type
+        }=this.form
+
+        const user={
+          nome, email, cpf, fone,
+          school, curso, password,
+          estado, birth, type
+        }
+        this.$store.dispatch('signUserUp', user).then(()=>{
+          this.$router.push('/encontre')
+          this.resetForm()
+          this.$parent.$children[1].openSnack('success','Cadastro concluído!')
+          return this.uploadFiles(user.email)
+        },err=>{
+          if(err.code =='auth/email-already-in-use'){
+            this.$parent.$children[1].openSnack('error','Email em uso!')
+          }
+        })
+      },
+     uploadFiles(imageId){
+        const imgRef = firebase.storage().ref('users/'+imageId+'/'+'image') 
+        const imagePromise = imgRef.put(this.imagemFirebase).then(() => {
+          console.log("foto upada")
+          this.$parent.$children[2].atualizarImagem()
+        })
+
+        return Promise.all([imagePromise])
+
+      }
+    }
+  }
+</script>
+
+<style lang="scss" scoped>
+    .login-container{
+        box-shadow: 0px 0px 25px rgba(0,0,0,0.7);
+        background-color: rgba(255, 255, 255, 0);
+    }
+    .texto-check{
+        font-weight:bold ;
+    }
+    .fas{
+        font-size: 35px;
+    }
+    .container-texts{
+        background-color: rgba(255, 255, 255, 0);
+    }
+    .rounded-card{
+      border-radius: 30px;
+    }
+   .foto{
+      transition: ease 0.2s;
+      cursor:pointer;
+      &:hover{
+        transition: ease 0.2s;
+        box-shadow: 0px 1px 15px rgba(0,0,0,100);
+      }
+    }
+    .fas.fa-user{
+      color: #546E7A;
+      font-size: 45px;
+    }
+    .adc-foto{
+      margin-top: 10px;
+      font-family: 'Raleway', 'sans-serif';
+      font-size: 15px;
+    }
+</style>
