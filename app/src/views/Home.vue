@@ -237,10 +237,11 @@
   }
   .imagem{
     height: 500px;
+    width: 100%;
     background-image: url(https://www.africarising.tv/wp-content/uploads/2017/03/African-stock-video-of-a-white-caucasian-photographer-or-graphic-designer-working-on-his-laptop.jpg);
     background-attachment: fixed; 
     background-position: center 0px;
-    background-size: 100vw 700px;
+    background-size: 100% 600px;
   }
   .titulo{
     font-family: 'Open Sans', 'sans-serif';
