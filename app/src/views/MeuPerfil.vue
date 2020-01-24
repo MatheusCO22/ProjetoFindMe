@@ -264,9 +264,34 @@ export default {
         return `${day}/${month}/${year}`
       },
       excluir(idUser){
-        const user = firebase.auth().currentUser;
-        console.log(user)
-        user.remove();
+        const user = firebase.auth().currentUser
+        const { db } = this.$store.state
+        const fotoRef = firebase.storage().ref().child('users/'+user.email+'/image')
+
+        this.$parent.$children[2].fotoUrl = null
+
+        fotoRef.delete().then(() => {
+          console.log("APAGOU FTO")
+        }).catch((error) => {
+          console.log("FOI NAO", error)
+        })
+        
+        this.$store.dispatch('logout').then(() => {
+          this.$router.push('/')
+          this.menu=false
+          this.fotoUrl = null
+
+          user.delete().then(()=> {
+            db.collection("users").doc(user.uid).delete().then(()=> {
+              this.$parent.$children[1].openSnack('error',"Conta excluída!")
+              console.log("Apagou DOC")
+            }).catch((error) => {
+                console.error("Error removing document: ", error);
+            })
+          }).catch((error) => {
+            console.log("deu merda")
+          })
+        })
       },
       editar() {
         this.$router.push('/editarPerfil')

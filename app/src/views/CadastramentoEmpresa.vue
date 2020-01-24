@@ -504,10 +504,10 @@ import firebase from 'firebase'
         }
 
           this.$store.dispatch('signUserUp', user).then(()=>{
-          return this.uploadFiles(user.email)
           this.resetForm()
           this.$router.push('/publique')
           this.$parent.$children[1].openSnack('success','Cadastro concluído!')
+          return this.uploadFiles(user.email)
          },
           err=>{
             if(err.code =='auth/email-already-in-use'){

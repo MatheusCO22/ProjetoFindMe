@@ -588,28 +588,27 @@ import firebase from 'firebase';
           userRef.update(user).then(()=>{
             console.log("USUARIO SALVO")
             if(this.isImageEditada){
+              this.$parent.$children[1].openSnack('success','Aguarde o upload da imagem...')
+
               const email = this.$store.state.authUser.email
               if(this.hasPhoto){
                 const userStorageRef = firebase.storage().ref("users/"+email+"/image")
                 userStorageRef.put(this.imagemFirebase).then(()=>{
-                console.log("Foto Firebase atualizada")
-                this.$parent.$children[2].atualizarImagem()
-
-                this.$parent.$children[1].openSnack('success','Perfil editado com sucesso!')
-                this.$router.push('/meuPerfil')
+                
+                  this.$parent.$children[1].openSnack('success','Perfil editado com sucesso!')
+                  this.$router.push('/meuPerfil')
+                  console.log("Foto Firebase atualizada")
+                  this.$parent.$children[2].atualizarImagem()
               })
               }else{
                 return this.uploadFiles(email)
-                
-                this.$parent.$children[1].openSnack('success','Perfil editado com sucesso!')
-                this.$router.push('/meuPerfil')
               }
             }else{
               this.$parent.$children[1].openSnack('success','Perfil editado com sucesso!')
               this.$router.push('/meuPerfil')
             }
-            
           })
+          
         }else{
           console.log('empresa')
           const { 
@@ -655,7 +654,9 @@ import firebase from 'firebase';
       uploadFiles(email){
         const imgRef = firebase.storage().ref('users/'+email+'/'+'image')
         const imagePromise = imgRef.put(this.imagemFirebase).then(() => {
-          this.$parent.$children[2].atualizarImagem()
+        this.$parent.$children[1].openSnack('success','Perfil editado com sucesso!')
+        this.$router.push('/meuPerfil')
+        this.$parent.$children[2].atualizarImagem()
         })
         return Promise.all([imagePromise])
       }
