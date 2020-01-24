@@ -73,12 +73,14 @@
                 @click="onClickProfile"
               >
                 <v-list-tile-avatar class="avatar">
-                  <i v-if="!fotoUrl"
+                  <i
+                    v-if="!fotoUrl"
                     class="fas fa-user"
                     style="font-size:20px; color:#455A64"
                     alt="10px"
                   />
-                   <img  v-if="fotoUrl" 
+                  <img
+                    v-if="fotoUrl" 
                     :src="fotoUrl"
                     alt="25px"
                   >
@@ -95,22 +97,31 @@
             </v-list>
             <v-divider />
             <v-list>
-              <v-list-tile :disabled="!this.$store.state.authUser" @click="onClickProjects">
+              <v-list-tile
+                :disabled="!this.$store.state.authUser"
+                @click="onClickProjects"
+              >
                 <v-list-tile-title>
                   Meus Projetos
                 </v-list-tile-title>
               </v-list-tile>
-              <v-list-tile :disabled="!this.$store.state.authUser" @click="onClickEvaluation">
+              <v-list-tile
+                :disabled="!this.$store.state.authUser"
+                @click="onClickEvaluation"
+              >
                 <v-list-tile-title>
                   Avaliações
                 </v-list-tile-title>
               </v-list-tile>
-              <v-list-tile :disabled="!this.$store.state.authUser" @click="logout">
+              <v-list-tile
+                :disabled="!this.$store.state.authUser"
+                @click="logout"
+              >
                 <v-list-tile-title>
                   Sair
                 </v-list-tile-title>
               </v-list-tile>
-             </v-list>
+            </v-list>
           </v-card>
         </v-menu>
       </div>

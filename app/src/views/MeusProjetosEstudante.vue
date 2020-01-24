@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-card
-      v-if="!this.load"
+      v-if="!load"
       class="rounded-card loading"
     >
       <v-img
@@ -10,8 +10,9 @@
         class="grey darken-4"
       />
     </v-card>
-    <v-card class="rounded-card no-projects elevation-7"
-      v-if="this.load && this.projects.length == 0"
+    <v-card
+      v-if="load && projects.length == 0"
+      class="rounded-card no-projects elevation-7"
       color="rgba(255, 255, 255, 0.8)"
       flat
     >
@@ -27,7 +28,7 @@
         </v-flex>
       </v-card-text>
         
-      <v-card-text >
+      <v-card-text>
         <v-flex
           class="text-erro"
           xs12
@@ -40,13 +41,15 @@
           xs12
           text-xs-center
         >
-            Para ver os projetos disponíveis clique <router-link to="encontre">aqui</router-link>.
+          Para ver os projetos disponíveis clique <router-link to="encontre">
+            aqui
+          </router-link>.
         </v-flex>
       </v-card-text>
     </v-card>
 
     <v-card
-      v-if="this.load"
+      v-if="load"
       class="rounded-card"
       color="rgba(255, 255, 255, 0.8)"
       flat
@@ -58,85 +61,88 @@
         <v-divider 
           v-if="index != 0"
         />
-          <v-card-text>
-            <v-container
-              grid-list-lg
-              fluid
+        <v-card-text>
+          <v-container
+            grid-list-lg
+            fluid
+          >
+            <v-layout
+              row
+              justify-center
+              align-center
+              style="width:100%;"
             >
-              <v-layout
-                row
-                justify-center
-                align-center
-                style="width:100%;"
+              <v-avatar
+                color="light-grey"
+                size="220px"
               >
-                <v-avatar
-                  color="light-grey"
-                  size="220px"
+                <img
+                  v-if="!project.imageUrl"
+                  src="https://artia.com/wp-content/uploads/2018/01/como-identificar-e-minimizar-os-riscos-do-projeto.png"
                 >
-                  <img
-                    v-if="!project.imageUrl"
-                    src="https://artia.com/wp-content/uploads/2018/01/como-identificar-e-minimizar-os-riscos-do-projeto.png"
-                  >
-                  <img
-                    v-if="project.imageUrl"
-                    :src="project.imageUrl"
-                  >
-                </v-avatar>
+                <img
+                  v-if="project.imageUrl"
+                  :src="project.imageUrl"
+                >
+              </v-avatar>
 
-                <v-divider class="divider" vertical />
+              <v-divider
+                class="divider"
+                vertical
+              />
 
-                <v-layout
-                  column
-                  style="width:100%;"
-                > 
-                  <v-flex
-                    xs12
-                    class="text"
+              <v-layout
+                column
+                style="width:100%;"
+              > 
+                <v-flex
+                  xs12
+                  class="text"
+                >
+                  <router-link
+                    class="title"
+                    :to="`projeto/${project.id}`"
                   >
-                    <router-link
-                      class="title"
-                      :to="`projeto/${project.id}`"
-                    >
-                      {{ project.title }}
-                    </router-link>
-                  </v-flex>
-                  <v-flex
-                    xs12
-                    class="text"
-                  >
-                    <b>Descrição: </b>{{project.description}}
-                  </v-flex>
-                  <v-flex
-                    xs12
-                    class="text"
-                  >
-                    <b>Requisitos: </b> {{project.requirements}}
-                  </v-flex>
-                  <v-flex
-                    xs12
-                    class="text"
-                  >
-                    <b>Categoria: </b> {{project.categoria}}
-                  </v-flex>
-                  <v-flex
-                    xs12
-                    class="text"
-                  >
-                    <b>Data limite: </b> {{project.data}}
-                  </v-flex>
-                  <v-flex
-                    xs12
-                    class="text"
-                  >
-                    <b>Empresa: </b>
-                    <router-link :to="`empresa/${project.idEmpresa}`">
-                      {{project.nomeEmpresa}}
-                    </router-link>
-                  </v-flex>
-                </v-layout>
+                    {{ project.title }}
+                  </router-link>
+                </v-flex>
+                <v-flex
+                  xs12
+                  class="text"
+                >
+                  <b>Descrição: </b>{{ project.description }}
+                </v-flex>
+                <v-flex
+                  xs12
+                  class="text"
+                >
+                  <b>Requisitos: </b> {{ project.requirements }}
+                </v-flex>
+                <v-flex
+                  xs12
+                  class="text"
+                >
+                  <b>Categoria: </b> {{ project.categoria }}
+                </v-flex>
+                <v-flex
+                  xs12
+                  class="text"
+                >
+                  <b>Data limite: </b> {{ project.data }}
+                </v-flex>
+                <v-flex
+                  xs12
+                  class="text"
+                >
+                  <b>Empresa: </b>
+                  <router-link :to="`empresa/${project.idEmpresa}`">
+                    {{ project.nomeEmpresa }}
+                  </router-link>
+                </v-flex>
               </v-layout>
-            </v-container>
-          </v-card-text>
+            </v-layout>
+          </v-container>
+        </v-card-text>
       </v-card>
     </v-card>
   </v-container>
@@ -151,14 +157,6 @@ import firebase from 'firebase';
           projects:[],
           load: false
         }
-    },
-    methods:{
-      redirecionarProjeto(idProjeto){
-        this.$router.push('projeto/'+ idProjeto)
-      },
-      redirecionarEmpresa(idEmpresa){
-        this.$router.push('empresa/'+ idEmpresa)
-      }
     },
     created(){
       const userId = this.$store.state.authUser.uid
@@ -194,6 +192,14 @@ import firebase from 'firebase';
         })
         this.load = true
       })
+    },
+    methods:{
+      redirecionarProjeto(idProjeto){
+        this.$router.push('projeto/'+ idProjeto)
+      },
+      redirecionarEmpresa(idEmpresa){
+        this.$router.push('empresa/'+ idEmpresa)
+      }
     }
   }
 </script>

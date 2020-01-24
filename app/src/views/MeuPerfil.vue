@@ -21,11 +21,11 @@
           >
             <v-img
               v-if="!fotoUrl"
-              :src = "require('../assets/loading.gif')"
+              :src="require('../assets/loading.gif')"
             />
             <img
               v-if="fotoUrl"
-              :src='fotoUrl'
+              :src="fotoUrl"
               alt="avatar"
             >
           </v-avatar>
@@ -128,14 +128,14 @@
           >
             <v-img
               v-if="!fotoUrl"
-              :src = "require('../assets/loading.gif')"
+              :src="require('../assets/loading.gif')"
             />
             <!--
               src="..\assets\loading.gif"
             -->
             <img
               v-if="fotoUrl"
-              :src='fotoUrl'
+              :src="fotoUrl"
               alt="avatar"
             >
           </v-avatar>

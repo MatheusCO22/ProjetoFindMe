@@ -22,15 +22,16 @@
               color="blue lighten-4"
               class="elevation-8"
             >
-            <img
-              v-if="fotoUrl" 
-              :src='fotoUrl'
-              alt="avatar"
-            >
-          <i v-if="!fotoUrl"
-            class="fas fa-user"
-            style="font-size:50px; color:#1867C0"
-          />    
+              <img
+                v-if="fotoUrl" 
+                :src="fotoUrl"
+                alt="avatar"
+              >
+              <i
+                v-if="!fotoUrl"
+                class="fas fa-user"
+                style="font-size:50px; color:#1867C0"
+              />    
             </v-avatar>
           </v-layout>
         </v-card-text>
@@ -45,15 +46,14 @@
           >
             <h3>{{ nome }}</h3>
           </v-flex>
-           <v-flex>
-
+          <v-flex>
             <v-rating
+              v-model="nota"
               hover
               readonly
               background-color="grey darken-1"
               half-increments
-              v-model="nota"/>
-              
+            />
           </v-flex>
         </v-layout>
         <v-card-text flat>
@@ -88,8 +88,12 @@
                 <h3>Data Nascimento: </h3>{{ dataNasc }}
               </v-flex>
 
-              <v-flex text-xs-center xs12 v-if="this.isInscrito==true">
-                <DialogAvaliar  />
+              <v-flex
+                v-if="isInscrito==true"
+                text-xs-center
+                xs12
+              >
+                <DialogAvaliar />
               </v-flex>
             </v-layout>
           </v-container>

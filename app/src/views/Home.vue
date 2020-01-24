@@ -1,13 +1,22 @@
 <template>
   <main class="main">
     <div class="imagem elevation-0">
-      <v-layout column align-center justify-center style="height:500px; background-color:#16213070">
+      <v-layout
+        column
+        align-center
+        justify-center
+        style="height:500px; background-color:#16213070"
+      >
         <v-card-text>
           <v-flex
             class="titulo fadeIn"
             text-xs-center
           >
-            <img src="../assets/logoAlt.png" width="275vw" alt="logo">
+            <img
+              src="../assets/logoAlt.png"
+              width="275vw"
+              alt="logo"
+            >
           </v-flex>
           <v-flex
             class="slogan fadeIn"
@@ -41,17 +50,24 @@
         >
           Como funciona?
         </v-flex>
-          <v-divider />
+        <v-divider />
       </v-card-text>
-      <v-card class="elevation-0" color="#EFEFEF">
+      <v-card
+        class="elevation-0"
+        color="#EFEFEF"
+      >
         <v-card-text>
-          <v-layout row justify-space-between style="padding: 20px;">
+          <v-layout
+            row
+            justify-space-between
+            style="padding: 20px;"
+          >
             <v-card class="etapa elevation-3">
               <v-flex
                 xs12
                 text-xs-center
               >
-                <i class="fas fa-folder-plus"/>
+                <i class="fas fa-folder-plus" />
               </v-flex>
               <v-flex
                 class="titulo-etapa fadeIn"
@@ -60,7 +76,7 @@
               >
                 PUBLICAÇÃO
               </v-flex>
-                <v-divider />
+              <v-divider />
               <v-card-text>
                 <v-flex
                   xs12
@@ -78,7 +94,7 @@
                 xs12
                 text-xs-center
               >
-                <i class="fas fa-comments"/>
+                <i class="fas fa-comments" />
               </v-flex>
               <v-flex
                 class="titulo-etapa fadeIn"
@@ -87,7 +103,7 @@
               >
                 COMUNICAÇÃO
               </v-flex>
-                <v-divider />
+              <v-divider />
               <v-card-text>
                 <v-flex
                   xs12
@@ -105,7 +121,7 @@
                 xs12
                 text-xs-center
               >
-                <i class="fas fa-code"/>
+                <i class="fas fa-code" />
               </v-flex>
               <v-flex
                 class="titulo-etapa fadeIn"
@@ -114,12 +130,11 @@
               >
                 TRABALHO
               </v-flex>
-                <v-divider />
+              <v-divider />
               <v-card-text>
                 <v-flex
                   xs12
                   text-xs-center
-                  class=""
                 >
                   A empresa irá analisar os interessados e selecionar um para trabalhar no projeto, 
                   que será notificado.
@@ -132,7 +147,7 @@
                 xs12
                 text-xs-center
               >
-                <i class="fas fa-check"/>
+                <i class="fas fa-check" />
               </v-flex>
               <v-flex
                 class="titulo-etapa fadeIn"
@@ -141,12 +156,11 @@
               >
                 ETAPA FINAL
               </v-flex>
-                <v-divider />
+              <v-divider />
               <v-card-text>
                 <v-flex
                   xs12
                   text-xs-center
-                  class=""
                 >
                   Após a conclusão e entrega do projeto, os participantes poderão avaliar um ao outro.
                 </v-flex>
@@ -155,7 +169,11 @@
           </v-layout>
         </v-card-text>
       </v-card>
-      <v-layout row align-center style="padding-bottom: 50px;">
+      <v-layout
+        row
+        align-center
+        style="padding-bottom: 50px;"
+      >
         <v-flex
           xs12
           text-xs-center

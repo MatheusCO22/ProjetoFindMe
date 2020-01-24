@@ -57,31 +57,36 @@
               xs12
               text-xs-center
             >
-
               <v-flex
-              xs12
-              text-xs-center
-            >
-              <v-avatar
-                size="180"
-                color="blue-grey lighten-4"
-                class="foto"
-                @click="adicionarFoto()"
-                :error="!!fotoUrl"
+                xs12
+                text-xs-center
               >
-              <v-layout column justify-center fill-height v-if="!fotoUrl">
-                <i class="fas fa-camera"/>
-              </v-layout>  
-                <img  v-if="fotoUrl"
-                  :src="fotoUrl"
-                  alt="20px"
+                <v-avatar
+                  size="180"
+                  color="blue-grey lighten-4"
+                  class="foto"
+                  :error="!!fotoUrl"
+                  @click="adicionarFoto()"
                 >
-              </v-avatar>
-              <p class="adc-foto">
-                Escolha uma foto para o projeto
-              </p>
+                  <v-layout
+                    v-if="!fotoUrl"
+                    column
+                    justify-center
+                    fill-height
+                  >
+                    <i class="fas fa-camera" />
+                  </v-layout>  
+                  <img
+                    v-if="fotoUrl"
+                    :src="fotoUrl"
+                    alt="20px"
+                  >
+                </v-avatar>
+                <p class="adc-foto">
+                  Escolha uma foto para o projeto
+                </p>
                 <small class="obrigatorio">Obrigatório</small>
-            </v-flex>
+              </v-flex>
               <input 
                 ref="fotoInput"
                 type="file"
@@ -124,8 +129,8 @@
               </v-flex>
               <v-flex xs12>
                 <v-combobox
-                  multiple
-                  v-model="form.keywords" 
+                  v-model="form.keywords"
+                  multiple 
                   placeholder="Tags (Separe por 'Enter')"
                   append-icon
                   chips
@@ -169,16 +174,16 @@
                       append-icon="event"
                       readonly
                       v-on="on"
-                    ></v-text-field>
+                    />
                   </template>
                   <v-date-picker
-                    locale="pt-br"
                     v-model="form.dataEntrega"
+                    locale="pt-br"
                     :min="dataTeste"
-                    @input="menu = false"
                     max="2025-12-31"
                     landscape
-                  ></v-date-picker>
+                    @input="menu = false"
+                  />
                 </v-menu>
               </v-flex>
 

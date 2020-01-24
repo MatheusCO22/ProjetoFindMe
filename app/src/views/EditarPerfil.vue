@@ -1,19 +1,22 @@
 <template>
   <main>
     <v-container
-      v-if="!this.load"
+      v-if="!load"
     >
       <v-card
         class="rounded-card loading"
       >
         <v-img
-          :src = "require('../assets/loading-engrenagem.gif')"
+          :src="require('../assets/loading-engrenagem.gif')"
           max-height="500"
           class="grey darken-4"
         />
       </v-card>
     </v-container>
-    <v-container class="master" v-if="this.load">
+    <v-container
+      v-if="load"
+      class="master"
+    >
       <v-card
         v-if="$store.state.dbUser.type == 'empresa'"
         flat
@@ -30,7 +33,10 @@
               grid-list-xl
               fluid
             >
-              <v-flex xs12 text-xs-center>
+              <v-flex
+                xs12
+                text-xs-center
+              >
                 <v-avatar
                   size="180"
                   color="blue lighten-4"
@@ -39,9 +45,10 @@
                 >
                   <v-img
                     v-if="!imageUrl"
-                    :src = "require('../assets/loading.gif')"
+                    :src="require('../assets/loading.gif')"
                   />
-                  <img  v-if="imageUrl" 
+                  <img
+                    v-if="imageUrl" 
                     :src="imageUrl"
                     alt="20px"
                   >
@@ -183,7 +190,10 @@
               grid-list-xl
               fluid
             >
-              <v-flex xs12 text-xs-center>
+              <v-flex
+                xs12
+                text-xs-center
+              >
                 <v-avatar
                   size="180"
                   color="blue lighten-4"
@@ -192,9 +202,10 @@
                 >
                   <v-img
                     v-if="!imageUrl"
-                    :src = "require('../assets/loading.gif')"
+                    :src="require('../assets/loading.gif')"
                   />
-                  <img  v-if="imageUrl" 
+                  <img
+                    v-if="imageUrl" 
                     :src="imageUrl"
                     alt="20px"
                   >
@@ -240,6 +251,7 @@
                     placeholder="123.456.789-00"
                     color="#1867C0"
                     mask="###.###.###-##"
+                    :rules="[rules.cpf]"
                   />
                 </v-flex>
                 <v-flex
@@ -320,6 +332,7 @@
                         label="Data de nascimento"
                         color="#1867C0"
                         append-icon="event"
+                        :rules="[rules.birth]"
                         v-on="on"
                       />
                     </template>
@@ -361,7 +374,8 @@
 </template>
 
 <script>
-import firebase from 'firebase'
+import CPF from 'gerador-validador-cpf';
+import firebase from 'firebase';
   export default {
     data () {
       const defaultForm={
@@ -370,6 +384,7 @@ import firebase from 'firebase'
         birth: new Date().toISOString().substring(0,10),
       }
     return {
+      anoAtual: new Date().toISOString().substring(0,4),
       valid:false,
       estados:[
         'AC','AL','AM','AP','BA','CE','DF','ES','GO','MA','MG','MS','MT','PA',
@@ -390,6 +405,8 @@ import firebase from 'firebase'
         },
         min: v => v.length >= 6 || 'Min 6 characters',
         cnpj: v => this.testaCNPJ(v) || 'CNPJ inválido.',
+        cpf: v => this.testaCPF(v) || 'CPF inválido.',
+        birth: v=> this.testaData(v)
       },
       conditions: false,
       content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur sodales ligula in libero. Sed dignissim lacinia nunc.`,
@@ -416,12 +433,13 @@ import firebase from 'firebase'
             'fone': doc.data().fone,
             'school': doc.data().school,
             'curso': doc.data().curso,
-            'birth': new Date().toISOString().substring(0,10),
+            'birth': doc.data().birth,
             'estado': doc.data().estado,
             'cnpj': doc.data().cnpj,
             'area': doc.data().area,
           }
           this.form = Object.assign({}, loadForm)
+          console.log("DATA"+ this.form.birth)
         })
 
         const storage = firebase.storage()
@@ -465,57 +483,84 @@ import firebase from 'firebase'
         leitorFoto.readAsDataURL(imagem[0])
         this.imagemFirebase=imagem[0]
         this.isImageEditada = true
-    },
-    testaCNPJ(cnpj) {
-      if(cnpj.length == 14){
-        var tamanho;
-        var numeros;
-        var digitos;
-        var soma;
-        var pos;
-        var resultado;
-        
-        if (cnpj == "00000000000000" || cnpj == "11111111111111" || 
-            cnpj == "22222222222222" || cnpj == "33333333333333" || 
-            cnpj == "44444444444444" || cnpj == "55555555555555" || 
-            cnpj == "66666666666666" || cnpj == "77777777777777" || 
-            cnpj == "88888888888888" || cnpj == "99999999999999"){
-              return false;
-        }
+      },
+      testaCNPJ(cnpj) {
+        if(cnpj.length == 14){
+          var tamanho;
+          var numeros;
+          var digitos;
+          var soma;
+          var pos;
+          var resultado;
+          
+          if (cnpj == "00000000000000" || cnpj == "11111111111111" || 
+              cnpj == "22222222222222" || cnpj == "33333333333333" || 
+              cnpj == "44444444444444" || cnpj == "55555555555555" || 
+              cnpj == "66666666666666" || cnpj == "77777777777777" || 
+              cnpj == "88888888888888" || cnpj == "99999999999999"){
+                return false;
+          }
 
-        tamanho = cnpj.length - 2;
-        numeros = cnpj.substring(0,tamanho);
-        digitos = cnpj.substring(tamanho);
-        soma = 0;
-        pos = tamanho - 7;
-        var i;
-        for (i = tamanho; i >= 1; i--) {
-          soma += numeros.charAt(tamanho - i) * pos--;
-          if (pos < 2){
-            pos = 9;
+          tamanho = cnpj.length - 2;
+          numeros = cnpj.substring(0,tamanho);
+          digitos = cnpj.substring(tamanho);
+          soma = 0;
+          pos = tamanho - 7;
+          var i;
+          for (i = tamanho; i >= 1; i--) {
+            soma += numeros.charAt(tamanho - i) * pos--;
+            if (pos < 2){
+              pos = 9;
+            }
           }
+          resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
+          if (resultado != digitos.charAt(0)){
+            return false;
+          }
+          tamanho = tamanho + 1;
+          numeros = cnpj.substring(0,tamanho);
+          soma = 0;
+          pos = tamanho - 7;
+          for (i = tamanho; i >= 1; i--) {
+            soma += numeros.charAt(tamanho - i) * pos--;
+            if (pos < 2){
+              pos = 9;
+            }
+          }
+          resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
+          if (resultado != digitos.charAt(1)){
+            return false;
+          }     
+          return true;
         }
-        resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
-        if (resultado != digitos.charAt(0)){
+      },
+      testaData(data){
+        if(data){
+          const ano = data.substring(6,10);
+          var idade = this.anoAtual - ano;
+          console.log(idade)
+          if(idade < 16){
+            console.log("TA AQUI")
+            return 'Você precisa ter pelo menos 16 anos incompletos.'
+          }
+          else{
+            return true
+          }
+        }else{
+          return 'Campo obrigatório'
+        }
+      },
+      testaCPF(strCpf){
+        if(strCpf.length == 11){
+          if(CPF.validate(strCpf)){
+            return true;
+          }else{
+            return false;
+          }  
+        }else{
           return false;
         }
-        tamanho = tamanho + 1;
-        numeros = cnpj.substring(0,tamanho);
-        soma = 0;
-        pos = tamanho - 7;
-        for (i = tamanho; i >= 1; i--) {
-          soma += numeros.charAt(tamanho - i) * pos--;
-          if (pos < 2){
-            pos = 9;
-          }
-        }
-        resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
-        if (resultado != digitos.charAt(1)){
-          return false;
-        }     
-        return true;
-      }
-    },
+      },
       formattedDate(date) {
         const [year, month, day] = date.split('-')
         return `${day}/${month}/${year}`

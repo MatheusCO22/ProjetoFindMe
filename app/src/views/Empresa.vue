@@ -1,8 +1,8 @@
 <template>
   <v-container class="container">
     <v-card
-      class="rounded-card no-ratings elevation-7"
       v-if="!$store.state.dbUser"
+      class="rounded-card no-ratings elevation-7"
       color="rgba(255, 255, 255, 0.8)"
       flat
       style="margin-top: 15vh"
@@ -19,7 +19,7 @@
         </v-flex>
       </v-card-text>
         
-      <v-card-text >
+      <v-card-text>
         <v-flex
           class="text-erro"
           xs12
@@ -53,18 +53,16 @@
               color="blue lighten-4"
               class="elevation-8"
             >
-
-             <img
-            v-if="fotoUrl" 
-              :src='fotoUrl'
-              alt="avatar"
-            >
-          <i v-if="!fotoUrl"
+              <img
+                v-if="fotoUrl" 
+                :src="fotoUrl"
+                alt="avatar"
+              >
+              <i
+                v-if="!fotoUrl"
                 class="fas fa-user"
                 style="font-size:50px; color:#1867C0"
               />
-
-
             </v-avatar>
           </v-layout>
         </v-card-text>
@@ -81,11 +79,12 @@
           </v-flex>
           <v-flex>
             <v-rating
+              v-model="nota"
               hover
               readonly
               background-color="grey darken-1"
               half-increments
-              v-model="nota"/>
+            />
           </v-flex>
         </v-layout>
         <v-card-text flat>
@@ -109,19 +108,18 @@
               </v-flex>
               <v-flex xs12>
                 <h3>Área de atuação: </h3>{{ area }}
-               
-                
-              
               </v-flex>
-              <v-flex text-xs-center xs12>
-                <DialogAvaliar  />
+              <v-flex
+                text-xs-center
+                xs12
+              >
+                <DialogAvaliar />
               </v-flex>
             </v-layout>
           </v-container>
         </v-card-text>
       </v-layout>
     </v-card>
-    
   </v-container>
 </template>
 

@@ -1,23 +1,23 @@
 <template>
   <v-container class="box">
     <v-card
-      v-if="!this.load"
+      v-if="!load"
       class="rounded-card loading"
     >
-        <v-img
-          src="https://2.bp.blogspot.com/-rZZr5nrVRu4/WMksy6Ha_UI/AAAAAAAAA-A/iwqZu6z1isAIUQKriqDZVimHzBoek-DYwCLcB/s1600/setting.gif"
-          max-height="500"
-          class="grey darken-4"
-        />
-      </v-card>
+      <v-img
+        src="https://2.bp.blogspot.com/-rZZr5nrVRu4/WMksy6Ha_UI/AAAAAAAAA-A/iwqZu6z1isAIUQKriqDZVimHzBoek-DYwCLcB/s1600/setting.gif"
+        max-height="500"
+        class="grey darken-4"
+      />
+    </v-card>
     <v-card
-      v-if="this.load"
+      v-if="load"
       flat
       color="rgba(255, 255, 255, 0.8)"
       class="rounded-card elevation-10"
     >
       <v-card-text
-        v-if="this.load"
+        v-if="load"
         flat
       >
         <v-form
@@ -31,7 +31,8 @@
           >
             <v-flex
               xs12
-              text-xs-center>
+              text-xs-center
+            >
               <v-avatar
                 size="150"
               >
@@ -40,13 +41,13 @@
                   :src="imageUrl"
                   @click="photoPicker()"
                 >
-              <input 
-                ref="fotoInput"
-                type="file"
-                style="display: none"
-                accept="image/*"
-                @change="imagemEscolhida"
-              >
+                <input 
+                  ref="fotoInput"
+                  type="file"
+                  style="display: none"
+                  accept="image/*"
+                  @change="imagemEscolhida"
+                >
               </v-avatar>
             </v-flex>
             <v-flex
@@ -57,7 +58,10 @@
               Editar foto do projeto
             </v-flex>
             <v-layout wrap>
-              <v-flex xs12 sm6>
+              <v-flex
+                xs12
+                sm6
+              >
                 <v-text-field
                   v-model="form.title"
                   label="Título do projeto"
@@ -65,7 +69,10 @@
                   color="#1867C0"
                 />
               </v-flex>
-              <v-flex xs12 sm6>
+              <v-flex
+                xs12
+                sm6
+              >
                 <v-text-field
                   v-model="form.requirements"
                   label="Requisitos"
@@ -75,7 +82,10 @@
                 />
               </v-flex>
               
-              <v-flex xs12 sm6>
+              <v-flex
+                xs12
+                sm6
+              >
                 <v-text-field
                   v-model="form.keywords"
                   label="Palavras-Chaves"
@@ -109,7 +119,7 @@
                   :items="areas"
                 />
               </v-flex>
-                <v-flex
+              <v-flex
                 xs12
                 sm6
                 md3
@@ -129,16 +139,16 @@
                       append-icon="event"
                       readonly
                       v-on="on"
-                    ></v-text-field>
+                    />
                   </template>
                   <v-date-picker
-                    locale="pt-br"
                     v-model="form.dataEntrega"
+                    locale="pt-br"
                     :min="new Date().toISOString().substr(0, 10)"
-                    @input="menu = false"
                     max="2025-12-31"
                     landscape
-                  ></v-date-picker>
+                    @input="menu = false"
+                  />
                 </v-menu>
               </v-flex>
 
@@ -170,11 +180,10 @@
               <v-flex
                 text-xs-center
                 xs12
-              >
-              </v-flex>
+              />
             </v-layout>
           </v-container>
-          <p/>
+          <p />
 		
           <v-card-actions>
             <v-btn

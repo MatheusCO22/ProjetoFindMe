@@ -65,22 +65,25 @@
               label="Senha"
               :append-icon="show1 ? 'visibility' : 'visibility_off'"
               :type="show1 ? 'text' : 'password'"
-              @click:append="show1 = !show1"
               :rules="[rules.min]"
               :error="dadosIncorretos"
+              @click:append="show1 = !show1"
               @focus="resetErrors"
             />
-              </v-flex>
-              <v-flex xs12 style="margin-top: 10px;">
-                <b
-                  class="text"
-                  @click="openDialogSelecao"
-                >
-                  Não tenho conta
-                </b>
-              <v-flex xs12>
-                <SenhaDialog/>
-              </v-flex>
+          </v-flex>
+          <v-flex
+            xs12
+            style="margin-top: 10px;"
+          >
+            <b
+              class="text"
+              @click="openDialogSelecao"
+            >
+              Não tenho conta
+            </b>
+            <v-flex xs12>
+              <SenhaDialog />
+            </v-flex>
           </v-flex>
         </v-form>
       </v-card-text>

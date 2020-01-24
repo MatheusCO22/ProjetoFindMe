@@ -43,30 +43,38 @@
         <v-flex xs12>
           <h3>Palavras-Chaves: </h3> {{ keywords }}
         </v-flex>
-        <v-flex xs12 class="empresa">
+        <v-flex
+          xs12
+          class="empresa"
+        >
           <h3>Empresa: </h3>
           <router-link :to="`/empresa/${userId}`">
             {{ user }}
           </router-link>
         </v-flex>
-        <v-flex xs12 text-xs-center>
-        </v-flex>
+        <v-flex
+          xs12
+          text-xs-center
+        />
 
-        <v-flex xs12>
-        </v-flex>
+        <v-flex xs12 />
       </v-card-text>
       <v-card-actions>
-        <v-btn class="ma-2"
+        <v-btn
+          class="ma-2"
           flat
           round
           color="blue darken-3"
           @click="redirecionar"
         >
-          <i class="far fa-file" style="margin-right:10px" />
+          <i
+            class="far fa-file"
+            style="margin-right:10px"
+          />
           Baixar documentação
         </v-btn>
-        <v-spacer></v-spacer>
-          <Inscrever />
+        <v-spacer />
+        <Inscrever />
       </v-card-actions>
     </v-card>
   </v-container>
@@ -128,7 +136,7 @@ export default {
       })
 
       }).catch((err) => {
-        console.log('deu ruim', error)
+        console.log('deu ruim', err)
         this.$parent.$children[1].closeLoading()
         this.$parent.$children[1].openSnack('error','Projeto não encontrado!')
         })

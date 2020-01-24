@@ -19,35 +19,41 @@
             fluid
             class="container-texts"
           >
-          <v-flex
-            xs12
-            text-xs-center
-          >
-            <v-avatar
-              size="180"
-              color="blue-grey lighten-4"
-              class="foto"
-              @click="photoPicker()"
-          >
-            <v-layout column justify-center fill-height v-if="!fotoUrl">
-              <i class="fas fa-user"/>
-            </v-layout>  
-              <img  v-if="fotoUrl" 
-                :src="fotoUrl"
-                alt="20px"
+            <v-flex
+              xs12
+              text-xs-center
+            >
+              <v-avatar
+                size="180"
+                color="blue-grey lighten-4"
+                class="foto"
+                @click="photoPicker()"
               >
-            </v-avatar>
+                <v-layout
+                  v-if="!fotoUrl"
+                  column
+                  justify-center
+                  fill-height
+                >
+                  <i class="fas fa-user" />
+                </v-layout>  
+                <img
+                  v-if="fotoUrl" 
+                  :src="fotoUrl"
+                  alt="20px"
+                >
+              </v-avatar>
               <p class="adc-foto">
                 Escolha uma foto de perfil
               </p>
-          </v-flex>
+            </v-flex>
             <input 
               ref="fotoInput"
               type="file"
               style="display: none"
               accept="image/*"
               @change="imagemEscolhida"
-          >
+            >
             <v-layout wrap>
               <v-flex
                 xs12
@@ -434,9 +440,7 @@ export default {
         console.log('chegou')
         this.$refs.fotoInput.click()
       },
-      	imagemEscolhida(event){
-				const storage = firebase.storage();
-				const storageRef = storage.ref();
+        imagemEscolhida(event){
         console.log('entrouuuu')
 
         const imagem=event.target.files
@@ -462,7 +466,7 @@ export default {
           var idade = this.anoAtual - ano;
           
           if(idade < 16){
-            return 'Você precisa ter pelo menos 16 anos para se cadastrar'
+            return 'Você precisa ter pelo menos 16 anos incompletos.'
           }
           else{
             return true
@@ -518,12 +522,11 @@ export default {
      uploadFiles(imageId){
         const imgRef = firebase.storage().ref('users/'+imageId+'/'+'image') 
         const imagePromise = imgRef.put(this.imagemFirebase).then(() => {
+          this.$parent.$children[1].openSnack('success','Cadastro concluído!')
           console.log("foto upada")
           this.$parent.$children[2].atualizarImagem()
         })
-
         return Promise.all([imagePromise])
-
       }
     }
   }

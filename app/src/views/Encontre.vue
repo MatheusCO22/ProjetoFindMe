@@ -29,50 +29,65 @@
             FILTRAR
           </v-flex>
           <v-divider />
-            <v-card-text>
-              <v-flex xs12 class="si">
-                <v-text-field
-                  v-model="nomeFiltro"
-                  placeholder="Nome"
-                /> 
-              </v-flex>
-              <v-flex xs12 class="si">
-                <v-autocomplete
-                  v-model="categoriaFiltro"
-                  placeholder="Categoria"
-                  color="#1867C0"
-                  :items="areas"
-                />
-              </v-flex>
-              <v-flex xs12 class="si">
-                  <v-text-field
-                    v-model="empresaFiltro"
-                    placeholder="Empresa"
-                  />
-              </v-flex>
-              <v-flex xs12 class="si">
-                <v-combobox
-                  multiple
-                  v-model="keywordsFiltro" 
-                  placeholder="Tags (Separe por 'Enter')"
-                  append-icon
-                  chips
-                  deletable-chips
-                  class="tag-input"
-                />
-              </v-flex>
-              </v-card-text>
-						<v-flex text-xs-center>
-							<v-btn class="ma-2"
-                flat
-                round
-                color="blue darken-3"
-                @click="limparFiltros()"
-              >
-                  <v-icon left>refresh</v-icon>
-                  Limpar filtros
-              </v-btn>
-						</v-flex>
+          <v-card-text>
+            <v-flex
+              xs12
+              class="si"
+            >
+              <v-text-field
+                v-model="nomeFiltro"
+                placeholder="Nome"
+              /> 
+            </v-flex>
+            <v-flex
+              xs12
+              class="si"
+            >
+              <v-autocomplete
+                v-model="categoriaFiltro"
+                placeholder="Categoria"
+                color="#1867C0"
+                :items="areas"
+              />
+            </v-flex>
+            <v-flex
+              xs12
+              class="si"
+            >
+              <v-text-field
+                v-model="empresaFiltro"
+                placeholder="Empresa"
+              />
+            </v-flex>
+            <v-flex
+              xs12
+              class="si"
+            >
+              <v-combobox
+                v-model="keywordsFiltro"
+                multiple 
+                placeholder="Tags (Separe por 'Enter')"
+                append-icon
+                chips
+                deletable-chips
+                class="tag-input"
+              />
+            </v-flex>
+          </v-card-text>
+          <v-flex text-xs-center>
+            <v-btn
+              class="ma-2"
+              flat
+              round
+              color="blue darken-3"
+              @click="limparFiltros()"
+            >
+              <v-icon left>
+                refresh
+              </v-icon>
+              Limpar filtros
+            </v-btn>
+          </v-flex>
         </v-card>
       </v-layout>
       <v-layout
@@ -86,12 +101,12 @@
           style="margin-left:5px; width:70vw; min-width: 700px; border-radius:25px"
         >
           <v-card
-            flat
-            color="rgba(255,255,255, 0.7)"
             v-for="(project, index) in filteredProjects"
             :key="project.id"
+            flat
+            color="rgba(255,255,255, 0.7)"
           >
-              <v-divider v-if="index !=0"/>
+            <v-divider v-if="index !=0" />
             <v-card-text>
               <v-container
                 grid-list-lg
@@ -105,9 +120,11 @@
                     color="blue-grey lighten-3"
                     size="220px"
                   >
-                    <i v-if="!project.imageUrl" 
-                      class="sem-foto fas fa-camera">
-                        <p> Projeto sem foto </p>
+                    <i
+                      v-if="!project.imageUrl" 
+                      class="sem-foto fas fa-camera"
+                    >
+                      <p> Projeto sem foto </p>
                     </i>
                     <img
                       v-if="project.imageUrl"
@@ -115,7 +132,10 @@
                     >
                   </v-avatar>
 
-                  <v-divider class="divider" vertical />
+                  <v-divider
+                    class="divider"
+                    vertical
+                  />
                 
                   <v-layout
                     column
@@ -198,6 +218,16 @@ export default {
       keywordsString: ''
     }  
   },
+      computed:{
+        filteredProjects: function(){
+          return this.projects.filter((project)=>{
+            return project.title.toLowerCase().match(this.nomeFiltro.trim().toLowerCase()) &&
+                   project.userName.toLowerCase().match(this.empresaFiltro.trim().toLowerCase()) &&
+                   project.categoria.toLowerCase().match(this.categoriaFiltro.trim().toLowerCase()) &&
+                   project.keywords.toLowerCase().match(this.trimJoinArray(this.keywordsFiltro));
+          })
+        }
+      },
       created(){
         const { db } = this.$store.state
         const storage = firebase.storage()
@@ -253,16 +283,6 @@ export default {
         })
         return array.join(';')
       }
-      },
-      computed:{
-        filteredProjects: function(){
-          return this.projects.filter((project)=>{
-            return project.title.toLowerCase().match(this.nomeFiltro.trim().toLowerCase()) &&
-                   project.userName.toLowerCase().match(this.empresaFiltro.trim().toLowerCase()) &&
-                   project.categoria.toLowerCase().match(this.categoriaFiltro.trim().toLowerCase()) &&
-                   project.keywords.toLowerCase().match(this.trimJoinArray(this.keywordsFiltro));
-          })
-        }
       }
    }
 

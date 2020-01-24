@@ -1,5 +1,5 @@
 <template>
-	<v-container
+  <v-container
     class="master"
     style="max-width: 100%"
   >
@@ -8,7 +8,7 @@
       align-start
       justify-center
     >
-    <v-layout
+      <v-layout
         class="filter"
         row
         align-start
@@ -29,40 +29,52 @@
             FILTRAR
           </v-flex>
           <v-divider />
-            <v-card-text>
-              <v-flex xs12 class="si">
-                <v-text-field
-                  v-model="filtros.nome"
-                  placeholder="Nome"
-                /> 
-              </v-flex>
-              <v-flex xs12 class="si">
-                <v-text-field
-                  v-model="filtros.curso"
-                  placeholder="Curso"
-                  color="#1867C0"
-                />
-              </v-flex>
-              <v-flex xs12 class="si">
-                <v-autocomplete
-                  v-model="filtros.estado"
-                  placeholder="Estado"
-                  color="#1867C0"
-                  :items="getEstados()"
-                />
-              </v-flex>
-            </v-card-text>
-						<v-flex text-xs-center>
-							<v-btn class="ma-2"
-                flat
-                round
-                color="blue darken-3"
-                @click="limparFiltros()"
-              >
-                  <v-icon left>refresh</v-icon>
-                  Limpar filtros
-              </v-btn>
-						</v-flex>
+          <v-card-text>
+            <v-flex
+              xs12
+              class="si"
+            >
+              <v-text-field
+                v-model="filtros.nome"
+                placeholder="Nome"
+              /> 
+            </v-flex>
+            <v-flex
+              xs12
+              class="si"
+            >
+              <v-text-field
+                v-model="filtros.curso"
+                placeholder="Curso"
+                color="#1867C0"
+              />
+            </v-flex>
+            <v-flex
+              xs12
+              class="si"
+            >
+              <v-autocomplete
+                v-model="filtros.estado"
+                placeholder="Estado"
+                color="#1867C0"
+                :items="getEstados()"
+              />
+            </v-flex>
+          </v-card-text>
+          <v-flex text-xs-center>
+            <v-btn
+              class="ma-2"
+              flat
+              round
+              color="blue darken-3"
+              @click="limparFiltros()"
+            >
+              <v-icon left>
+                refresh
+              </v-icon>
+              Limpar filtros
+            </v-btn>
+          </v-flex>
         </v-card>
       </v-layout>
       <v-layout
@@ -70,19 +82,19 @@
         align-start
         justify-center
       >
-    <!--ESTUDANTES-->
+        <!--ESTUDANTES-->
 
         <v-card
           color="rgba(255,255,255, 0.7)"
           style="margin-left:5px; width:70vw; min-width: 700px; border-radius:25px"
         >
           <v-card
-            flat
-            color="rgba(255,255,255, 0.7)"
             v-for="(estudante, index) in filteredEstudantes"
             :key="estudante.id"
+            flat
+            color="rgba(255,255,255, 0.7)"
           >
-              <v-divider v-if="index !=0"/>
+            <v-divider v-if="index !=0" />
             <v-card-text>
               <v-container
                 grid-list-lg
@@ -92,23 +104,28 @@
                   row
                   align-center
                 >
-                    <router-link :to="`estudante/${estudante.id}`">
-                  <v-avatar
-                    color="blue-grey lighten-3"
-                    size="220px"
-                  >
-                    <i v-if="!estudante.imageUrl" 
-                      class="sem-foto fas fa-camera">
-                        <p> Projeto sem foto </p>
-                    </i>
+                  <router-link :to="`estudante/${estudante.id}`">
+                    <v-avatar
+                      color="blue-grey lighten-3"
+                      size="220px"
+                    >
+                      <i
+                        v-if="!estudante.imageUrl" 
+                        class="sem-foto fas fa-camera"
+                      >
+                        <p> Estudante sem foto </p>
+                      </i>
                       <img
                         v-if="estudante.imageUrl"
                         :src="estudante.imageUrl"
                       >
-                  </v-avatar>
-                    </router-link>
+                    </v-avatar>
+                  </router-link>
 
-                  <v-divider class="divider" vertical />
+                  <v-divider
+                    class="divider"
+                    vertical
+                  />
                 
                   <v-layout
                     column
@@ -176,6 +193,15 @@ export default {
      }
    }
   },
+  computed:{
+    filteredEstudantes: function(){
+      return this.estudantes.filter((estudante)=>{
+            return estudante.nome.toLowerCase().match(this.filtros.nome.trim().toLowerCase()) &&
+                   estudante.curso.toLowerCase().match(this.filtros.curso.trim().toLowerCase()) &&
+                   estudante.estado.toLowerCase().match(this.filtros.estado.trim().toLowerCase())
+      })
+    }
+  },
   created(){
      const { db } = this.$store.state
      const storage = firebase.storage()
@@ -220,15 +246,6 @@ export default {
     },
     getEstados(){
       return this.$parent.$children[1].getEstados()
-    }
-  },
-  computed:{
-    filteredEstudantes: function(){
-      return this.estudantes.filter((estudante)=>{
-            return estudante.nome.toLowerCase().match(this.filtros.nome.trim().toLowerCase()) &&
-                   estudante.curso.toLowerCase().match(this.filtros.curso.trim().toLowerCase()) &&
-                   estudante.estado.toLowerCase().match(this.filtros.estado.trim().toLowerCase())
-      })
     }
   }
 }

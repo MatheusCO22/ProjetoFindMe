@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-card
-      v-if="!this.load"
+      v-if="!load"
       class="rounded-card loading"
     >
       <v-img
@@ -10,8 +10,9 @@
         class="grey darken-4"
       />
     </v-card>
-    <v-card class="rounded-card no-projects elevation-7"
-      v-if="this.load && this.projects.length == 0"
+    <v-card
+      v-if="load && projects.length == 0"
+      class="rounded-card no-projects elevation-7"
       color="rgba(255, 255, 255, 0.8)"
       flat
     >
@@ -27,7 +28,7 @@
         </v-flex>
       </v-card-text>
         
-      <v-card-text >
+      <v-card-text>
         <v-flex
           class="text-erro"
           xs12
@@ -40,135 +41,138 @@
           xs12
           text-xs-center
         >
-            Para publicar um projeto clique <router-link to="publique">aqui</router-link>.
+          Para publicar um projeto clique <router-link to="publique">
+            aqui
+          </router-link>.
         </v-flex>
       </v-card-text>
     </v-card>
     <v-card
-      class="rounded-card project-wrapper" 
-      v-if="this.load">
-        
+      v-if="load" 
+      class="rounded-card project-wrapper"
+    >
       <v-card
-          v-for="(project, index) in projects"
-          :key="project.id"
-        >
-          <v-divider 
-            v-if="index != 0"
-          />
-            <v-card-text>
-              <v-container
-                grid-list-lg
+        v-for="(project, index) in projects"
+        :key="project.id"
+      >
+        <v-divider 
+          v-if="index != 0"
+        />
+        <v-card-text>
+          <v-container
+            grid-list-lg
+          >
+            <v-layout
+              row
+              align-center
+              style="width: 100%"
+            >
+              <v-avatar
+                color="light-grey"
+                size="220px"
               >
-                <v-layout
-                  row
-                  align-center
-                  style="width: 100%"
-
+                <img
+                  v-if="!project.imageUrl"
+                  src="https://artia.com/wp-content/uploads/2018/01/como-identificar-e-minimizar-os-riscos-do-projeto.png"
                 >
-                  <v-avatar
-                    color="light-grey"
-                    size="220px"
-                  >
-                    <img
-                      v-if="!project.imageUrl"
-                      src="https://artia.com/wp-content/uploads/2018/01/como-identificar-e-minimizar-os-riscos-do-projeto.png"
-                    >
-                    <img
-                      v-if="project.imageUrl"
-                      :src="project.imageUrl"
-                    >
-                  </v-avatar>
+                <img
+                  v-if="project.imageUrl"
+                  :src="project.imageUrl"
+                >
+              </v-avatar>
 
-                  <v-divider class="divider" vertical />
+              <v-divider
+                class="divider"
+                vertical
+              />
 
-                  <v-layout
-                    wrap
+              <v-layout
+                wrap
+              >
+                <v-flex
+                  xs11
+                  class="text"
+                >
+                  <router-link
+                    class="title"
+                    :to="`projeto/${project.id}`"
                   >
-                    <v-flex
-                      xs11
-                      class="text"
-                    >
-                      <router-link
-                        class="title"
-                        :to="`projeto/${project.id}`"
-                      >
-                        {{ project.title }}
-                      </router-link>
-                    </v-flex>
-                  <v-flex
-                    xs1
-                    class="text"
-                    style="padding: 0;"
+                    {{ project.title }}
+                  </router-link>
+                </v-flex>
+                <v-flex
+                  xs1
+                  class="text"
+                  style="padding: 0;"
+                >
+                  <v-menu
+                    bottom
+                    center
                   >
-                    <v-menu
-                        bottom
-                        center
+                    <template v-slot:activator="{on}">
+                      <v-btn
+                        class="grey--text"
+                        icon
+                        v-on="on"
                       >
-                        <template v-slot:activator="{on}">
-                          <v-btn
-                            class="grey--text"
-                            icon
-                            v-on="on"
-                          >
-                            <v-icon>more_vert</v-icon>
-                          </v-btn>
-                        </template>
-                        <v-list>
-                          <v-list-tile @click="redirecionar('editarProjeto/'+project.id)">
-                            <v-list-tile-title>
-                              <i class="fas fa-pencil-alt" />
-                              <small> Editar projeto</small>
-                            </v-list-tile-title>
-                          </v-list-tile>
-                          <v-list-tile @click="excluir(project.id)">
-                            <v-list-tile-title>
-                              <i class="fas fa-trash-alt" />
-                              <small> Excluir projeto</small>
-                            </v-list-tile-title>
-                          </v-list-tile>
-                          <v-list-tile @click="redirecionar('inscricoes/'+project.id)">
-                            <v-list-tile-title>
-                              <i class="fas fa-bell" />
-                              <small> Inscritos</small>
-                            </v-list-tile-title>
-                          </v-list-tile>
-                        </v-list>
-                      </v-menu>
-                  </v-flex>
-                    <v-flex
-                      xs12
-                      class="text"
-                    >
-                      <b>Descrição: </b>{{project.description}}
-                    </v-flex>
-                    <v-flex
-                      xs12
-                      class="text"
-                    >
-                      <b>Requisitos: </b> {{project.requirements}}
-                    </v-flex>
-                    <v-flex
-                      xs12
-                      class="text"
-                    >
-                      <b>Categoria: </b> {{project.categoria}}
-                    </v-flex>
-                    <v-flex
-                      xs12
-                      class="text"
-                    >
-                      <b>Data limite: </b> {{project.data}}
-                    </v-flex>
-                    <v-flex
-                      xs12
-                      class="text"
-                    >
-                    </v-flex>
-                  </v-layout>
-                </v-layout>
-              </v-container>
-            </v-card-text>
-        </v-card>
+                        <v-icon>more_vert</v-icon>
+                      </v-btn>
+                    </template>
+                    <v-list>
+                      <v-list-tile @click="redirecionar('editarProjeto/'+project.id)">
+                        <v-list-tile-title>
+                          <i class="fas fa-pencil-alt" />
+                          <small> Editar projeto</small>
+                        </v-list-tile-title>
+                      </v-list-tile>
+                      <v-list-tile @click="excluir(project.id)">
+                        <v-list-tile-title>
+                          <i class="fas fa-trash-alt" />
+                          <small> Excluir projeto</small>
+                        </v-list-tile-title>
+                      </v-list-tile>
+                      <v-list-tile @click="redirecionar('inscricoes/'+project.id)">
+                        <v-list-tile-title>
+                          <i class="fas fa-bell" />
+                          <small> Inscritos</small>
+                        </v-list-tile-title>
+                      </v-list-tile>
+                    </v-list>
+                  </v-menu>
+                </v-flex>
+                <v-flex
+                  xs12
+                  class="text"
+                >
+                  <b>Descrição: </b>{{ project.description }}
+                </v-flex>
+                <v-flex
+                  xs12
+                  class="text"
+                >
+                  <b>Requisitos: </b> {{ project.requirements }}
+                </v-flex>
+                <v-flex
+                  xs12
+                  class="text"
+                >
+                  <b>Categoria: </b> {{ project.categoria }}
+                </v-flex>
+                <v-flex
+                  xs12
+                  class="text"
+                >
+                  <b>Data limite: </b> {{ project.data }}
+                </v-flex>
+                <v-flex
+                  xs12
+                  class="text"
+                />
+              </v-layout>
+            </v-layout>
+          </v-container>
+        </v-card-text>
+      </v-card>
     </v-card>
   </v-container>
 </template>
@@ -240,13 +244,13 @@ export default {
           fileRef.delete().then(()=> {
             console.log('apagou o arquivo')
           }).catch((err)=> {
-              console.log(error)
+              console.log(err)
           
           })
           imageRef.delete().then(()=> {
             console.log('apagou a foto')
           }).catch((err)=> {
-              console.log(error)
+              console.log(err)
           
           })
 					projects.splice(indice,1)

@@ -5,26 +5,41 @@
       width="500"
     >
       <template v-slot:activator="{ on }">
-          <v-badge>
-            <template v-slot:badge>{{getQntInscritos()}}</template>
-              <v-btn class="ma-2"
-                v-if="$store.state.dbUser.type == 'estudante'"
-                flat
-                round
-                color="blue darken-3"
-                :disabled="!botao"
-                v-on="on"
-              >
-                <b v-if="!alert" style="font-weight:300">
-                  <i class="fas fa-check" style="margin-right:10px" />
-                  Inscrever-se
-                </b>
-                <b v-if="alert" style="font-weight:300">
-                  <i class="fas fa-check" style="margin-right:10px" />
-                  Você já está inscrito
-                </b>
-              </v-btn>
-          </v-badge>
+        <v-badge>
+          <template v-slot:badge>
+            {{ getQntInscritos() }}
+          </template>
+          <v-btn
+            v-if="$store.state.dbUser.type == 'estudante'"
+            class="ma-2"
+            flat
+            round
+            color="blue darken-3"
+            :disabled="!botao"
+            v-on="on"
+          >
+            <b
+              v-if="!alert"
+              style="font-weight:300"
+            >
+              <i
+                class="fas fa-check"
+                style="margin-right:10px"
+              />
+              Inscrever-se
+            </b>
+            <b
+              v-if="alert"
+              style="font-weight:300"
+            >
+              <i
+                class="fas fa-check"
+                style="margin-right:10px"
+              />
+              Você já está inscrito
+            </b>
+          </v-btn>
+        </v-badge>
       </template>
       
       <v-card>

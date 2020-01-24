@@ -1,5 +1,8 @@
 <template>          
-	<v-flex xs12 class="text-center">
+  <v-flex
+    xs12
+    class="text-center"
+  >
     <v-dialog
       v-model="dialog"
       width="500"
@@ -9,13 +12,19 @@
           outline
           round
           color="blue darken-3"
-          v-on="on"
           :disabled="!botao"
+          v-on="on"
         >
-          <b v-if="!avaliou" style="font-weight:300">
+          <b
+            v-if="!avaliou"
+            style="font-weight:300"
+          >
             Avaliar
           </b>
-          <b v-if="avaliou" style="font-weight:300">
+          <b
+            v-if="avaliou"
+            style="font-weight:300"
+          >
             Você já avaliou
           </b>
         </v-btn>
@@ -26,50 +35,57 @@
           text-xs-center
           class="headline grey lighten-2"
         >
-        <v-flex xs12 text-xs-center>
-          Avaliar
-        </v-flex>
+          <v-flex
+            xs12
+            text-xs-center
+          >
+            Avaliar
+          </v-flex>
         </v-card-title>
 
         <v-card-text>
           <v-flex xs12>
             <v-form ref="form">
-            <v-textarea
-              filled
-              v-model="avaliacao"
-              name="input-7-4"
-              label="Deixe seu Feedback"
-              placeholder="Deixe seu Feedback..."
-            ></v-textarea>
+              <v-textarea
+                v-model="avaliacao"
+                filled
+                name="input-7-4"
+                label="Deixe seu Feedback"
+                placeholder="Deixe seu Feedback..."
+              />
             </v-form>
           </v-flex>
 
-          <v-flex xs12 text-xs-center>
+          <v-flex
+            xs12
+            text-xs-center
+          >
             <v-rating
+              v-model="nota"
               hover
               half-increments
-              v-model="nota"
-            >
-            </v-rating>
+            />
           </v-flex>
-          <v-flex xs12 text-xs-center>
-            
-            <span class="font-weight-bold"/>
+          <v-flex
+            xs12
+            text-xs-center
+          >
+            <span class="font-weight-bold" />
           </v-flex>
         </v-card-text>
 
-        <v-divider></v-divider>
+        <v-divider />
 
         <v-card-actions>
-          <v-spacer></v-spacer>
-              <v-btn
+          <v-spacer />
+          <v-btn
                   
-                  color="red"
-                  class="white--text"   
-                  @click="close()"
-                >
-                  Cancelar
-                </v-btn>
+            color="red"
+            class="white--text"   
+            @click="close()"
+          >
+            Cancelar
+          </v-btn>
           <v-btn
             color="primary"
             text

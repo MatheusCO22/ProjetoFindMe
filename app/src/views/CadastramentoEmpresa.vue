@@ -26,10 +26,16 @@
                 class="foto"
                 @click="photoPicker()"
               >
-              <v-layout column justify-center fill-height v-if="!fotoUrl">
-                <i class="fas fa-user"/>
-              </v-layout>  
-                <img  v-if="fotoUrl" 
+                <v-layout
+                  v-if="!fotoUrl"
+                  column
+                  justify-center
+                  fill-height
+                >
+                  <i class="fas fa-user" />
+                </v-layout>  
+                <img
+                  v-if="fotoUrl" 
                   :src="fotoUrl"
                   alt="20px"
                 >
@@ -38,14 +44,14 @@
                 Escolha uma foto de perfil
               </p>
             </v-flex>
-             <input 
+            <input 
               ref="fotoInput"
               type="file"
               style="display: none"
               accept="image/*"
               @change="imagemEscolhida"
             >
-            <v-spacer></v-spacer>
+            <v-spacer />
             <v-layout wrap>
               <v-flex
                 xs12
