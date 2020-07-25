@@ -193,7 +193,6 @@ export default {
         console.log('update imagem-- chegou')
         const user = this.$store.state.authUser
         const storage = firebase.storage()
-        const storageRef = storage.ref()
 
         if(user!=null){
           const email = user.email

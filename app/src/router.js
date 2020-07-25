@@ -17,6 +17,7 @@ import Estudante from '@/views/Estudante'
 import EditarProjeto from '@/views/EditarProjeto'
 import MeusProjetosEstudante from '@/views/MeusProjetosEstudante'
 import Avaliacoes from '@/views/Avaliacoes'
+import NotFound from '@/views/NotFound'
 
 Vue.use(Router)
 
@@ -112,5 +113,10 @@ export default new Router({
       path: '/avaliacoes',
       name: 'Avaliacoes',
       component: Avaliacoes
+    },
+    {
+      path: '*',
+      name: 'Não encontrado',
+      component: NotFound
     }
   ]})
