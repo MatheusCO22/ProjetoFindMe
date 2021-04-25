@@ -211,15 +211,16 @@
    },
    methods:{
     btnClick(arg){
-     var user = this.$store.state.dbUser;
+      var user = this.$store.state.dbUser
       if(user){
+        console.log("TIPO: "+user.type)
         if(arg){
           this.$router.push(arg)
         }else{
           if(user.type == 'empresa'){
             this.$router.push('publique')
           }else{
-            this.$$router.push('encontre')
+            this.$router.push('encontre')
           }
         }
       }
@@ -234,6 +235,7 @@
 <style lang="scss" scoped>
   .main{
     width: 100%;
+    min-width: 500px;
   }
   .imagem{
     height: 500px;
@@ -241,7 +243,8 @@
     background-image: url(https://www.africarising.tv/wp-content/uploads/2017/03/African-stock-video-of-a-white-caucasian-photographer-or-graphic-designer-working-on-his-laptop.jpg);
     background-attachment: fixed; 
     background-position: center 0px;
-    background-size: 100% 600px;
+    background-size: 100% 80%;
+    
   }
   .titulo{
     font-family: 'Open Sans', 'sans-serif';

@@ -55,15 +55,16 @@
     }),
     methods:{
       btnClick(arg){
-        var user = this.$store.state.dbUser;
+        var user = this.$store.state.dbUser
         if(user){
+          console.log("TIPO: "+user.type)
           if(arg){
             this.$router.push(arg)
           }else{
             if(user.type == 'empresa'){
               this.$router.push('publique')
             }else{
-              this.$$router.push('encontre')
+              this.$router.push('encontre')
             }
           }
         }

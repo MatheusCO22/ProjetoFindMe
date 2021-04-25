@@ -6,7 +6,7 @@
     >  
       <v-card
         flat
-        color="rgba(201, 234, 251, 0.8)"
+        color="rgba(255, 255, 255, 0.8)"
         class="rounded-card"
       >
         <v-flex
@@ -113,7 +113,7 @@
     >
       <v-card
         flat
-        color="rgba(201, 234, 251, 0.6)"
+        color="rgba(255, 255, 255, 0.8)"
         class="rounded-card"
       >
         <v-flex

@@ -13,92 +13,63 @@
       <v-divider />
       <v-card-text>
         <v-layout row>
-          <v-flex
-            sm2
-            text-xs-center
+          <v-avatar
+            size="20vh"
+            color="grey"
           >
-            <v-avatar
-              size="20vh"
-              color="grey"
+            <img
+              src="../assets/team/carvalho.png"
+              alt="avatar"
             >
-              <img
-                src="../assets/team/carvalho.png"
-                alt="avatar"
-              >
-            </v-avatar>
-          </v-flex>                
+          </v-avatar>
+            <v-divider vertical class="vert"></v-divider>
           <v-layout column>
-            <v-flex
-              xs4
-              class="nome"
-            >
+            <v-flex class="nome">
               Matheus Carvalho
             </v-flex>
-            <v-flex xs12>
+            <v-flex>
               Atuei no desenvolvimento front-end, no design e em parte do back-end do site.
             </v-flex>
           </v-layout>
         </v-layout>
-      </v-card-text>
-      <v-divider />
-      <v-card-text>
+      <v-divider class="hrz"></v-divider>
         <v-layout row>
           <v-layout column>
-            <v-flex
-              xs4
-              text-xs-right
-              class="nome"
-            >
+            <v-flex text-xs-right class="nome">
               Matheus Puehler
             </v-flex>
-            <v-flex
-              sm1
-              text-xs-right
-            >
+            <v-flex text-xs-right>
               Atuei no desenvolvimento do banco de dados, back-end e toda idealização do site.
             </v-flex>
           </v-layout>
-          <v-flex
-            xs2
-            text-xs-center
+            <v-divider vertical class="vert"></v-divider>
+          <v-avatar
+            size="20vh"
+            color="grey"
           >
-            <v-avatar
-              size="20vh"
-              color="blue"
+            <img
+              src="../assets/team/puehler.png"
+              alt="avatar"
             >
-              <img
-                src="../assets/team/puehler.png"
-                alt="Puehler"
-              >
-            </v-avatar>
-          </v-flex>
+          </v-avatar>
         </v-layout>
-      </v-card-text>
-      <v-divider />
-      <v-card-text>
+          <v-divider class="hrz"></v-divider>
         <v-layout row>
-          <v-flex
-            sm2
-            text-xs-center
+          <v-avatar
+            size="20vh"
+            color="grey"
           >
-            <v-avatar
-              size="20vh"
-              color="grey"
+            <img
+              src="../assets/team/bruno.png"
+              alt="avatar"
             >
-              <img
-                src="../assets/team/bruno.png"
-                alt="Bruno"
-              >
-            </v-avatar>
-          </v-flex>                
+          </v-avatar>
+            <v-divider vertical class="vert"></v-divider>
           <v-layout column>
-            <v-flex
-              xs4
-              class="nome"
-            >
+            <v-flex class="nome">
               Bruno Witzel
             </v-flex>
-            <v-flex xs12>
+            <v-flex>
               Atuei na modelagem do sistema e desenvolvimento de arquivos referentes ao site.
             </v-flex>
           </v-layout>
@@ -118,6 +89,12 @@
     .card{
       border-radius: 35px;
       background-color: rgba(255, 255, 255, 0.6);
+    }
+    .vert{
+      margin: 0px 20px;
+    }
+    .hrz{
+      margin: 20px 0px;
     }
 </style>
 
